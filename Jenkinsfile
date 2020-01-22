@@ -13,7 +13,7 @@ pipeline {
             steps{
                 withCredentials([string(credentialsId: 'docker-hub', variable: 'dockerHubPwd')]) {
                     sh "docker login -u dmedema -p ${dockerHubPwd}"
-                    sh "docker push dmedema/nodeapp:${DOCKER_TAG}"
+                    sh "docker push dmedema/node-app:${DOCKER_TAG}"
                 }
             }
         }
@@ -22,12 +22,12 @@ pipeline {
                 sh "chmod +x changeTag.sh"
                 sh "./changeTag.sh ${DOCKER_TAG}"
                 sshagent(['centos8']) {
-                    sh "scp -o StrictHostKeyChecking=no services.yml node-app-pod.yml ec2-user@10.0.0.80:/home/ec2-user/"
+                    sh "scp -o StrictHostKeyChecking=no services.yml node-app-pod.yml ec2-user@18.144.48.201:/home/ec2-user/"
                     script{
                         try{
-                            sh "ssh ec2-user@10.0.0.80 kubectl apply -f ."
+                            sh "ssh ec2-user@18.144.48.201 kubectl apply -f ."
                         }catch(error){
-                            sh "ssh ec2-user@10.0.0.80 kubectl create -f ."
+                            sh "ssh ec2-user@18.144.48.201 kubectl create -f ."
                         }
                     }
                 }
