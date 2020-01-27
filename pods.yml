@@ -7,6 +7,6 @@ metadata:
 spec:
   containers:
     - name: node-app
-      image: dmedema/nodeapp:tagVersion
+      image: dmedema/node-app:tagVersion
       ports:
         - containerPort: 8080
